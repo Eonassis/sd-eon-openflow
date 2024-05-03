@@ -302,6 +302,84 @@ vim testem.py
 sudo ~/mininet/examples/miniedit.py
 
 
+###################################### Lab da reuniao
+
+######################lab gustavo 
+ifconfig
+conecta ssh
+inicia o mininet 
+sudo mn
+nodes
+links
+pingall
+h1 ping -c 10 h2
+iperf
+
+abrir o wireshark 
+sair do ninet 
+exit 
+entrar novamente 
+mn
+explicar mensagens hello
+fazer
+iperf e ping 
+mostar no eth1
+
+iniciar o hosts 
+antes de entrar 
+sudo xauth add $(xauth -f ~mininet/.Xauthority list|tail -1)
+xterm h1 h2
+iperf -s
+iperf -c 10.0.0.1
+
+simples servidor web
+
+mininet> h1 python -m http.server 80 &
+
+um wget no servidor web baixando a pagina web 
+
+mininet> h2 wget -O - h1
+
+encerrando o servidor web 
+
+mininet> h1 kill %python
+
+
+### redes mais complexas 
+sudo mn --topo single,3 --controller none --mac
+sh ovs-ofctl add-flow s1 action=normal
+sh ovs-ofctl dump-flows s1
+sh ovs-ofctl del-flows s1
+sh ovs-ofctl show s1
+
+regra por porta 
+sh ovs-ofctl add-flow s1 in_port=1,actions=output:3
+sh ovs-ofctl add-flow s1 in_port=3,actions=output:1
+
+regra por mac
+h1 ifconfig | grep ether
+h2 ifconfig | grep ether
+
+sh ovs-ofctl add-flow s1 dl_src=00:00:00:00:00:01,dl_dst=00:00:00:00:00:02,actions=output:2
+sh ovs-ofctl add-flow s1 dl_src=00:00:00:00:00:02,dl_dst=00:00:00:00:00:01,actions=output:1
+Add a flow to allow ARP requests
+sh ovs-ofctl add-flow s1 dl_type=0x806,nw_proto=1,actions=flood
+
+h1 ping -c 3 h2
+
+regra com maior prioridade dropar pacotes por 30 segundos em s1
+sh ovs-ofctl add-flow s1 priority=40000,hard_timeout=30,actions=drop
+
+
+chamar um py dentro e fora do mininet 
+sudo python testem.py
+vim testem.py
+
+
+sudo ~/mininet/examples/miniedit.py
+
+
+
 
 
 
